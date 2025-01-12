@@ -10,7 +10,7 @@ use contracts::simple_counter::ISimpleCounterDispatcherTrait;
 fn test_create_counter() {
     // Deploy factory contract
     let factory_contract = declare("CounterFactory").unwrap().contract_class();
-    let factory_constructor_data: Array::<core::felt252> = array![0, 0];
+    let factory_constructor_data: Array::<felt252> = array![0, 0];
     let (factory_contract_address, _) = factory_contract.deploy(@factory_constructor_data).unwrap();
     println!("Factory contract address: {:?}", factory_contract_address);
 
