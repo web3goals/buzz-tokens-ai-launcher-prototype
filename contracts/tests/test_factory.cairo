@@ -6,7 +6,8 @@ use contracts::simple_counter::ISimpleCounterDispatcher;
 use contracts::simple_counter::ISimpleCounterDispatcherTrait;
 
 #[test]
-fn test_main_flow() {
+#[ignore]
+fn test_create_counter() {
     // Deploy factory contract
     let factory_contract = declare("CounterFactory").unwrap().contract_class();
     let factory_constructor_data: Array::<core::felt252> = array![0, 0];

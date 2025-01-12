@@ -2,6 +2,7 @@
 
 ### Commands
 
+- Build contracts - `scarb build`
 - Run tests - `snforge test`
 - Open file with Starknet accounts - `code /c/Users/kiv1n/.starknet_accounts/starknet_open_zeppelin_accounts.json`
 - Deckare a contract - `sncast --account account_1 declare --url http://127.0.0.1:5055 --contract-name HelloStarknet`

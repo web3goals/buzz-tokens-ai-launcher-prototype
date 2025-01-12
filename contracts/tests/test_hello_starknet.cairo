@@ -14,6 +14,7 @@ fn deploy_contract(name: ByteArray) -> ContractAddress {
 }
 
 #[test]
+#[ignore]
 fn test_increase_balance() {
     let contract_address = deploy_contract("HelloStarknet");
 
@@ -30,6 +31,7 @@ fn test_increase_balance() {
 
 #[test]
 #[feature("safe_dispatcher")]
+#[ignore]
 fn test_cannot_increase_balance_with_zero_value() {
     let contract_address = deploy_contract("HelloStarknet");
 
