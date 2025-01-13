@@ -2,10 +2,15 @@
   "name": "bot",
   "version": "0.1.0",
   "scripts": {
-    "start": "ts-node ./scripts/start.ts"
+    "start_bot": "ts-node ./scripts/start_bot.ts"
   },
   "devDependencies": {
+    "@types/node-telegram-bot-api": "^0.64.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "node-telegram-bot-api": "^0.66.0"
   }
 }
