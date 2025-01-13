@@ -7,6 +7,10 @@ import { Contract } from "starknet";
 export default function Home() {
   const { argentTMA, account, setAccount, isConnected } = useArgentTMA();
 
+  const searchParams = new URLSearchParams(location.search);
+  const tgStartParam = searchParams.get("tgWebAppStartParam");
+  console.log({ tgStartParam });
+
   async function handleConnect() {
     console.log("Connecting the user...");
     await argentTMA?.requestConnection({
