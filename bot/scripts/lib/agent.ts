@@ -31,7 +31,8 @@ export default class Agent {
       try {
         this.bot.sendMessage(
           chatIds[i],
-          "Token:\n" +
+          "News:\n...\n\n" +
+            "Token:\n" +
             JSON.stringify(tokenIdea) +
             "\n\nLink:\n" +
             `https://t.me/buzz_tokens_ai_launcher_bot/app?startapp=${tokenIdea.id}`
