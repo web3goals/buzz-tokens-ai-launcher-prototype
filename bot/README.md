@@ -3,4 +3,4 @@
 ### Commands
 
 - Install dependencies - `npm install`
-- Start bot - `npm run start_bot`
+- Start bot - `npm run start`
