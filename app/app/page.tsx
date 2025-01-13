@@ -1,6 +1,8 @@
 "use client";
 
+import { chainConfig } from "@/config/chain";
 import useArgentTMA from "@/hooks/use-argent-tma";
+import { Contract } from "starknet";
 
 export default function Home() {
   const { argentTMA, account, setAccount, isConnected } = useArgentTMA();
@@ -14,8 +16,62 @@ export default function Home() {
   }
 
   async function handleDisconnect() {
+    console.log("Disconnecting the user...");
     await argentTMA?.clearSession();
     setAccount(undefined);
+  }
+
+  async function handleReadContract() {
+    console.log("Reading contract...");
+    // Check argentTMA
+    if (!argentTMA) {
+      throw new Error("ArgentTMA is undefined");
+    }
+    // Define contract
+    const { abi: contractAbi } = await argentTMA.provider.getClassAt(
+      chainConfig.contracts.helloStarknet
+    );
+    if (contractAbi === undefined) {
+      throw new Error("No ABI found for the contract");
+    }
+    const contract = new Contract(
+      contractAbi,
+      chainConfig.contracts.helloStarknet,
+      argentTMA.provider
+    );
+    // Read contract
+    const contractBalance = await contract.get_balance();
+    console.log("Contract balance:", contractBalance);
+  }
+
+  async function handleWriteContract() {
+    console.log("Writing contract...");
+    // Check argentTMA
+    if (!argentTMA) {
+      throw new Error("ArgentTMA is undefined");
+    }
+    // Define contract
+    const { abi: contractAbi } = await argentTMA.provider.getClassAt(
+      chainConfig.contracts.helloStarknet
+    );
+    if (contractAbi === undefined) {
+      throw new Error("No ABI found for the contract");
+    }
+    const contract = new Contract(
+      contractAbi,
+      chainConfig.contracts.helloStarknet,
+      argentTMA.provider
+    );
+    // Check account
+    if (!account) {
+      throw new Error("Account is undefined");
+    }
+    // Prepare a contract call
+    const contractCall = contract.populate("increase_balance", [1]);
+    console.log("Contract call:", contractCall);
+    // Execute transaction
+    const { transaction_hash } = await account.execute(contractCall);
+    console.log("Transaction hash:", transaction_hash);
   }
 
   return (
@@ -38,6 +94,18 @@ export default function Home() {
           onClick={() => handleDisconnect()}
         >
           Disconnect
+        </button>
+        <button
+          className="rounded-md bg-foreground text-background py-2 px-4"
+          onClick={() => handleReadContract()}
+        >
+          Read Contract
+        </button>
+        <button
+          className="rounded-md bg-foreground text-background py-2 px-4"
+          onClick={() => handleWriteContract()}
+        >
+          Write Contract
         </button>
       </div>
     </div>

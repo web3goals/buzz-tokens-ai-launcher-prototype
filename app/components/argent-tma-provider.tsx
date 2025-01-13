@@ -1,7 +1,10 @@
 "use client";
 
+import { chainConfig } from "@/config/chain";
+import { telegramConfig } from "@/config/telegram";
 import { ArgentTMA, SessionAccountInterface } from "@argent/tma-wallet";
 import { createContext, useEffect, useState } from "react";
+import { RpcProvider } from "starknet";
 
 // Define the type of context value
 interface ArgentTMAContextValue {
@@ -22,22 +25,23 @@ export function ArgentTMAProvider({ children }: { children: React.ReactNode }) {
   const [account, setAccount] = useState<SessionAccountInterface | undefined>();
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
-  // TODO: Fix the allowed methods field
   useEffect(() => {
     const argentTMA = ArgentTMA.init({
       environment: "sepolia",
-      appName: "Buzz Tokens AI Launcher App",
-      appTelegramUrl: "https://t.me/buzz_tokens_ai_launcher_bot/app",
+      appName: telegramConfig.app.name,
+      appTelegramUrl: telegramConfig.app.url,
       sessionParams: {
         allowedMethods: [
           {
-            contract:
-              "0x036133c88c1954413150db74c26243e2af77170a4032934b275708d84ec5452f",
-            selector: "increment",
+            contract: chainConfig.contracts.helloStarknet,
+            selector: "increase_balance",
           },
         ],
         validityDays: 90,
       },
+      provider: new RpcProvider({
+        nodeUrl: process.env.NEXT_PUBLIC_RPC_PROVIDER_URL,
+      }),
     });
     setArgentTMA(argentTMA);
   }, []);
