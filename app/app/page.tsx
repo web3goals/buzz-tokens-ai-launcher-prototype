@@ -1,101 +1,108 @@
-import Image from "next/image";
+"use client";
+
+import { ArgentTMA, SessionAccountInterface } from "@argent/tma-wallet";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const argentTMA = ArgentTMA.init({
+    environment: "sepolia", // "sepolia" | "mainnet" (Whitelisting required)
+    appName: "Buzz Tokens AI Launcher App", // Your Telegram app name
+    appTelegramUrl: "https://t.me/buzz_tokens_ai_launcher_bot/app", // Your Telegram app URL
+    sessionParams: {
+      allowedMethods: [
+        {
+          contract:
+            "0x036133c88c1954413150db74c26243e2af77170a4032934b275708d84ec5452f",
+          selector: "increment",
+        },
+      ],
+      validityDays: 90, // session validity (in days) - default: 90
+    },
+  });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+  const [account, setAccount] = useState<SessionAccountInterface | undefined>();
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+
+  async function handleCheckConnection() {
+    console.log("Checking if the user is connected...");
+    const isConnected = argentTMA.isConnected();
+    console.log({ isConnected });
+  }
+
+  async function handleConnect() {
+    console.log("Connecting the user...");
+    await argentTMA.requestConnection({
+      callbackData: "custom_callback",
+      approvalRequests: [],
+    });
+  }
+
+  async function handleClearSessionButton() {
+    await argentTMA.clearSession();
+    setAccount(undefined);
+  }
+
+  useEffect(() => {
+    // Call connect() as soon as the app is loaded
+    argentTMA
+      .connect()
+      .then((res) => {
+        if (!res) {
+          // Not connected
+          setIsConnected(false);
+          return;
+        }
+
+        const { account, callbackData } = res;
+
+        if (account.getSessionStatus() !== "VALID") {
+          // Session has expired or scope (allowed methods) has changed
+          // A new connection request should be triggered
+
+          // The account object is still available to get access to user's address
+          // but transactions can't be executed
+          const { account } = res;
+
+          setAccount(account);
+          setIsConnected(false);
+          return;
+        }
+
+        // The session account is returned and can be used to submit transactions
+        setAccount(account);
+        setIsConnected(true);
+        // Custom data passed to the requestConnection() method is available here
+        console.log("callback data:", callbackData);
+      })
+      .catch((err) => {
+        console.error("Failed to connect", err);
+      });
+  }, [argentTMA]);
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <p>Connected: {isConnected ? "True" : "False"}</p>
+      <p>Account: {JSON.stringify(account)}</p>
+      <div className="flex flex-col gap-2 mt-4">
+        <button
+          className="rounded-md bg-foreground text-background py-2 px-4"
+          onClick={() => handleCheckConnection()}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          Check Connection
+        </button>
+        <button
+          className="rounded-md bg-foreground text-background py-2 px-4"
+          onClick={() => handleConnect()}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          Connect
+        </button>
+        <button
+          className="rounded-md bg-foreground text-background py-2 px-4"
+          onClick={() => handleClearSessionButton()}
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          Clear Session
+        </button>
+      </div>
     </div>
   );
 }
