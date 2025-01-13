@@ -11,10 +11,16 @@ async function main() {
     testEnvironment: true,
   });
 
+  bot.onText(/\/start/, (msg) => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, "Welcome! How can I assist you today?");
+  });
+
   bot.on("message", (msg) => {
     const chatId = msg.chat.id;
-
-    bot.sendMessage(chatId, "Received your message");
+    if (msg.text !== "/start") {
+      bot.sendMessage(chatId, `You said: ${msg.text}`);
+    }
   });
 }
 
