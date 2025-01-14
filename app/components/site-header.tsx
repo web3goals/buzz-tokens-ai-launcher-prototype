@@ -15,7 +15,7 @@ import {
 } from "./ui/dropdown-menu";
 
 export function SiteHeader() {
-  const { argentTMA, account, setAccount, isConnected } = useArgentTMA();
+  const { argentTMA, account, setAccount } = useArgentTMA();
 
   async function handleDisconnect() {
     console.log("Disconnecting the user...");
@@ -53,7 +53,7 @@ export function SiteHeader() {
                   <span>GitHub</span>
                 </DropdownMenuItem>
               </Link>
-              {isConnected && (
+              {argentTMA && argentTMA.isConnected() && (
                 <div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => handleDisconnect()}>

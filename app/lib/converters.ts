@@ -1,3 +1,5 @@
+import axios from "axios";
+
 /**
  * Convert "0x4306D7a2c265D2cb72Db0c5a55ea5F4f6F73C4B1" to "0x430...c4b1".
  */
@@ -11,4 +13,18 @@ export function addressToShortAddress(
     )}`;
   }
   return shortAddress?.toLowerCase();
+}
+
+export function errorToString(error: unknown): string {
+  let message = JSON.stringify(error);
+  if (error instanceof Error) {
+    message = error.message;
+  }
+  if (axios.isAxiosError(error)) {
+    message = JSON.stringify({
+      status: error.response?.status,
+      data: error.response?.data,
+    });
+  }
+  return message;
 }
