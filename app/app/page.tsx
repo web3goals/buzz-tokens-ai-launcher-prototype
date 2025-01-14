@@ -4,7 +4,7 @@ import { chainConfig } from "@/config/chain";
 import useArgentTMA from "@/hooks/use-argent-tma";
 import { Contract } from "starknet";
 
-export default function Home() {
+export default function HomePage() {
   const { argentTMA, account, setAccount, isConnected } = useArgentTMA();
 
   const searchParams = new URLSearchParams(location.search);
@@ -79,7 +79,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+    <main className="container py-16 md:px-32 lg:px-56 xl:px-80">
       <div className="flex flex-col gap-2 text-center">
         <p>Connected: {isConnected ? "True" : "False"}</p>
         <p className="break-all">
@@ -112,6 +112,6 @@ export default function Home() {
           Write Contract
         </button>
       </div>
-    </div>
+    </main>
   );
 }
