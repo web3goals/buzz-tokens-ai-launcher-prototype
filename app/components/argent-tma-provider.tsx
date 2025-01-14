@@ -11,7 +11,7 @@ interface ArgentTMAContextValue {
   argentTMA: ArgentTMA | undefined;
   account: SessionAccountInterface | undefined;
   setAccount: (account: SessionAccountInterface | undefined) => void;
-  isConnected: boolean;
+  // isConnected: boolean;
 }
 
 // Create the context
@@ -23,7 +23,7 @@ export const ArgentTMAContext = createContext<
 export function ArgentTMAProvider({ children }: { children: React.ReactNode }) {
   const [argentTMA, setArgentTMA] = useState<ArgentTMA | undefined>();
   const [account, setAccount] = useState<SessionAccountInterface | undefined>();
-  const [isConnected, setIsConnected] = useState<boolean>(false);
+  // const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
     const argentTMA = ArgentTMA.init({
@@ -53,7 +53,7 @@ export function ArgentTMAProvider({ children }: { children: React.ReactNode }) {
       .then((res) => {
         if (!res) {
           // Not connected
-          setIsConnected(false);
+          // setIsConnected(false);
           return;
         }
 
@@ -68,13 +68,13 @@ export function ArgentTMAProvider({ children }: { children: React.ReactNode }) {
           const { account } = res;
 
           setAccount(account);
-          setIsConnected(false);
+          // setIsConnected(false);
           return;
         }
 
         // The session account is returned and can be used to submit transactions
         setAccount(account);
-        setIsConnected(true);
+        // setIsConnected(true);
 
         // Custom data passed to the requestConnection() method is available here
         console.log("Callback data:", callbackData);
@@ -85,9 +85,7 @@ export function ArgentTMAProvider({ children }: { children: React.ReactNode }) {
   }, [argentTMA]);
 
   return (
-    <ArgentTMAContext.Provider
-      value={{ argentTMA, account, setAccount, isConnected }}
-    >
+    <ArgentTMAContext.Provider value={{ argentTMA, account, setAccount }}>
       {children}
     </ArgentTMAContext.Provider>
   );
