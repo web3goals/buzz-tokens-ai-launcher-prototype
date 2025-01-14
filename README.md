@@ -1,3 +1,3 @@
-# 🚀 Buzz Tokens AI Launcher
+# 🐰 Buzz Tokens AI Launcher
 
 ...
