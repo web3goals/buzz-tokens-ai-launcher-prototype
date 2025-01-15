@@ -51,10 +51,12 @@ export default class Agent {
 
   private generateBroadcastMessage(tokenIdea: TokenIdea): string {
     return (
-      "\n\nToken idea:\n" +
-      JSON.stringify(tokenIdea) +
-      "\n\nLink for launching:\n" +
-      `https://t.me/buzz_tokens_ai_launcher_bot/app?startapp=i_${tokenIdea._id?.toString()}`
+      "*💡 TOKEN IDEA 🐰*" +
+      `\n\n*Name*: ${tokenIdea.name}` +
+      `\n\n*Symbol*: $${tokenIdea.symbol}` +
+      `\n\n*Description*: ${tokenIdea.description}` +
+      `\n\n[🚀 Launch Token](https://t.me/buzz_tokens_ai_launcher_bot/app?startapp=i_${tokenIdea._id?.toString()})` +
+      `\n\n[📰 Open News Page](${tokenIdea.newsUrl})`
     );
   }
 }

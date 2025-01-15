@@ -41,7 +41,9 @@ export default class Bot {
     const chats = await findChats();
     for (let i = 0; i < chats.length; i++) {
       try {
-        this.bot.sendMessage(chats[i].id, message);
+        this.bot.sendMessage(chats[i].id, message, {
+          parse_mode: "Markdown",
+        });
       } catch (error) {
         console.error(error);
       }
