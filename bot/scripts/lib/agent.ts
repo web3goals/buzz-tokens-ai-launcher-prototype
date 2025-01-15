@@ -14,37 +14,37 @@ export default class Agent {
 
   // TODO: Enable interval for production
   public async start() {
-    try {
-      console.log("Starting the agent...");
+    console.log("Starting the agent...");
 
-      // const agentInterval = 10_000;
-      // setInterval(async () => {
-      //   this.startIteration();
-      // }, agentInterval);
-      this.startIteration();
-    } catch (error) {
-      console.error(error);
-    }
+    // const agentInterval = 10_000;
+    // setInterval(async () => {
+    //   this.startIteration();
+    // }, agentInterval);
+    this.startIteration();
   }
 
   private async startIteration() {
-    console.log("Starting an iteration...");
-    // Get news
-    const news = await fetchNews();
-    if (!news) {
-      throw new Error("No news fetched");
+    try {
+      console.log("Starting an iteration...");
+      // Get news
+      const news = await fetchNews();
+      if (!news) {
+        throw new Error("No news fetched");
+      }
+      // Get token idea
+      const tokenIdea = await generateTokenIdea(news);
+      if (!tokenIdea) {
+        throw new Error("No token idea generated");
+      }
+      // Save token idea
+      await insertTokenIdea(tokenIdea);
+      // Broadcast token idea
+      const broadcastMessage = this.generateBroadcastMessage(news, tokenIdea);
+      await this.bot.broadcastMessage(broadcastMessage);
+      console.log("Iteration completed");
+    } catch (error) {
+      console.error(error);
     }
-    // Get token idea
-    const tokenIdea = await generateTokenIdea(news);
-    if (!tokenIdea) {
-      throw new Error("No token idea generated");
-    }
-    // Save token idea
-    await insertTokenIdea(tokenIdea);
-    // Broadcast token idea
-    const broadcastMessage = this.generateBroadcastMessage(news, tokenIdea);
-    await this.bot.broadcastMessage(broadcastMessage);
-    console.log("Iteration completed");
   }
 
   private generateBroadcastMessage(news: News, tokenIdea: TokenIdea): string {
