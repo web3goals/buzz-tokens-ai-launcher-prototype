@@ -1,6 +1,5 @@
 import { TokenIdea } from "../db/models/token-idea";
 import { insertTokenIdea } from "../db/services/token-idea-service";
-import { News } from "../types/news";
 import { generateTokenIdea } from "./ai";
 import Bot from "./bot";
 import { fetchNews } from "./news";
@@ -39,7 +38,7 @@ export default class Agent {
       // Save token idea
       await insertTokenIdea(tokenIdea);
       // Broadcast token idea
-      const broadcastMessage = this.generateBroadcastMessage(news, tokenIdea);
+      const broadcastMessage = this.generateBroadcastMessage(tokenIdea);
       await this.bot.broadcastMessage(broadcastMessage);
       console.log("Iteration completed");
     } catch (error) {
@@ -47,10 +46,8 @@ export default class Agent {
     }
   }
 
-  private generateBroadcastMessage(news: News, tokenIdea: TokenIdea): string {
+  private generateBroadcastMessage(tokenIdea: TokenIdea): string {
     return (
-      "News:\n" +
-      JSON.stringify(news) +
       "\n\nToken idea:\n" +
       JSON.stringify(tokenIdea) +
       "\n\nLink for launching:\n" +

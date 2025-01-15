@@ -11,7 +11,7 @@ export default class Bot {
       console.log("Starting the bot...");
 
       // Create a Telegram bot
-      const bot = new TelegramBot(process.env.TOKEN as string, {
+      const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN as string, {
         polling: true,
         testEnvironment: true,
       });
