@@ -6,6 +6,7 @@ import { addressToShortAddress } from "@/lib/converters";
 import {
   BotIcon,
   GithubIcon,
+  HouseIcon,
   LogOutIcon,
   MenuIcon,
   RabbitIcon,
@@ -53,6 +54,12 @@ export function SiteHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <Link href="/">
+                <DropdownMenuItem>
+                  <HouseIcon className="size-4 mr-2" />
+                  <span>Home Page</span>
+                </DropdownMenuItem>
+              </Link>
               <Link href={siteConfig.links.telegramBot} target="_blank">
                 <DropdownMenuItem>
                   <BotIcon className="size-4 mr-2" />

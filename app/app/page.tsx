@@ -1,7 +1,7 @@
 "use client";
 
 import { HomeConnectedAccountSection } from "@/components/home/home-connected-account-section";
-import { HomeLoadingSection } from "@/components/home/home-loading-section";
+import { LoadingSection } from "@/components/loading-section";
 import { HomeNotConnectedAccountSection } from "@/components/home/home-not-connected-account-section";
 import useArgentTMA from "@/hooks/use-argent-tma";
 import { useRouter } from "next/navigation";
@@ -20,11 +20,6 @@ export default function HomePage() {
   const tgStartParamIdea = tgStartParam?.startsWith("i_")
     ? tgStartParam.slice(2)
     : null;
-  console.log({
-    tgStartParam,
-    tgStartParamToken,
-    tgStartParamIdea,
-  });
 
   useEffect(() => {
     if (tgStartParamToken) {
@@ -109,5 +104,5 @@ export default function HomePage() {
     return <HomeNotConnectedAccountSection />;
   }
 
-  return <HomeLoadingSection />;
+  return <LoadingSection />;
 }
