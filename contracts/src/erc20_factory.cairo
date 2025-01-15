@@ -9,7 +9,6 @@ pub trait IERC20Factory<TContractState> {
         symbol: felt252,
         symbol_len: usize,
         supply: usize,
-        recipient: ContractAddress,
     ) -> ContractAddress;
 
     fn get_erc20_class_hash(ref self: TContractState) -> ClassHash;
@@ -19,12 +18,24 @@ pub trait IERC20Factory<TContractState> {
 
 #[starknet::contract]
 pub mod ERC20Factory {
-    use starknet::{ContractAddress, ClassHash, syscalls::deploy_syscall};
+    use starknet::{ContractAddress, get_caller_address, ClassHash, syscalls::deploy_syscall};
     use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
 
     #[storage]
     struct Storage {
         erc20_class_hash: ClassHash,
+    }
+
+    #[event]
+    #[derive(Copy, Drop, Debug, PartialEq, starknet::Event)]
+    pub enum Event {
+        ERC20Created: ERC20Created,
+    }
+
+    #[derive(Copy, Drop, Debug, PartialEq, starknet::Event)]
+    pub struct ERC20Created {
+        pub creator: ContractAddress,
+        pub erc20: ContractAddress,
     }
 
     #[constructor]
@@ -41,18 +52,26 @@ pub mod ERC20Factory {
             symbol: felt252,
             symbol_len: usize,
             supply: usize,
-            recipient: ContractAddress,
         ) -> ContractAddress {
-            // Constructor arguments
+            // Define caller
+            let caller = get_caller_address();
+
+            // Define constructor arguments
             let mut constructor_calldata: Array::<felt252> = array![
-                name, name_len.into(), symbol, symbol_len.into(), supply.into(), recipient.into(),
+                name, name_len.into(), symbol, symbol_len.into(), supply.into(), caller.into(),
             ];
 
-            // Contract deployment
+            // Deploy contract
             let (deployed_address, _) = deploy_syscall(
                 self.erc20_class_hash.read(), 0, constructor_calldata.span(), false,
             )
                 .unwrap();
+
+            // Emit event
+            self
+                .emit(
+                    Event::ERC20Created(ERC20Created { creator: caller, erc20: deployed_address }),
+                );
 
             deployed_address
         }
