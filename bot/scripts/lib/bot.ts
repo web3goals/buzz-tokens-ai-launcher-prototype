@@ -22,6 +22,7 @@ export default class Bot {
         // Save the chat in the database
         insertChat({ id: chatId.toString(), createdTime: new Date() });
         // Send an info message
+        // TODO: Add link to the web app
         bot.sendMessage(
           chatId,
           "As soon as the AI agent finds a cool idea to launch a token, you'll get a notification 🔔"
