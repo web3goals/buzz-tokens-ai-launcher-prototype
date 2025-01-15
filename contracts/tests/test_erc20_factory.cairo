@@ -42,6 +42,12 @@ fn test_create_erc20() {
 
     // Create ERC20 contract using factory
     let erc20_contract_address = factory_dispatcher.create_erc20('Test Token', 10, 'TT', 2, 1000);
+
+    // let constructor_calldata: Array::<felt252> = array![
+    //     'Test Token', 10.into(), 'TT', 2.into(), 1000,
+    // ];
+    // println!("Calldata {:?}", constructor_calldata);
+
     println!("ERC20 contract address: {:?}", erc20_contract_address);
 
     // Check events
