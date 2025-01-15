@@ -6,7 +6,7 @@ export class TokenIdea {
     public name: string,
     public symbol: string,
     public description: string,
-    public news: News,
+    public newsUrl: string,
     public _id?: ObjectId
   ) {}
 }

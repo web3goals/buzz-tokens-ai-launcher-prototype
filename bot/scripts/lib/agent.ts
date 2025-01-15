@@ -36,9 +36,12 @@ export default class Agent {
         throw new Error("No token idea generated");
       }
       // Save token idea
-      await insertTokenIdea(tokenIdea);
+      const tokenIdeaId = await insertTokenIdea(tokenIdea);
       // Broadcast token idea
-      const broadcastMessage = this.generateBroadcastMessage(tokenIdea);
+      const broadcastMessage = this.generateBroadcastMessage({
+        ...tokenIdea,
+        _id: tokenIdeaId,
+      });
       await this.bot.broadcastMessage(broadcastMessage);
       console.log("Iteration completed");
     } catch (error) {
