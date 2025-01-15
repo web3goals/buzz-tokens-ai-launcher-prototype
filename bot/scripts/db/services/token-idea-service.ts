@@ -1,7 +1,16 @@
-import { ObjectId } from "mongodb";
+import { Collection, ObjectId } from "mongodb";
 import { TokenIdea } from "../models/token-idea";
+import clientPromise from "../client";
+import { mongoDBConfig } from "../../config/mongodb";
 
-// TODO: Implement
 export async function insertTokenIdea(tokenIdea: TokenIdea): Promise<ObjectId> {
-  return new ObjectId();
+  const collection = await getCollectionTokenIdeas();
+  const insertOneResult = await collection.insertOne(tokenIdea);
+  return insertOneResult.insertedId;
+}
+
+async function getCollectionTokenIdeas(): Promise<Collection<TokenIdea>> {
+  const client = await clientPromise;
+  const db = client.db(mongoDBConfig.database);
+  return db.collection<TokenIdea>(mongoDBConfig.collectionTokenIdeas);
 }

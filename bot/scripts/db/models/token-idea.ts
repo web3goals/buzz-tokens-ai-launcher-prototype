@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb";
-import { News } from "../../types/news";
 
 export class TokenIdea {
   constructor(
@@ -7,6 +6,7 @@ export class TokenIdea {
     public symbol: string,
     public description: string,
     public newsUrl: string,
+    public createdTime: Date,
     public _id?: ObjectId
   ) {}
 }

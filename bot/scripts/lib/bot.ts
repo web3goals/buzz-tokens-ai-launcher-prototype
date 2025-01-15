@@ -20,7 +20,7 @@ export default class Bot {
       bot.on("message", (msg) => {
         const chatId = msg.chat.id;
         // Save the chat in the database
-        insertChat({ id: chatId });
+        insertChat({ id: chatId.toString(), createdTime: new Date() });
         // Send an info message
         bot.sendMessage(
           chatId,

@@ -46,6 +46,7 @@ export async function generateTokenIdea(
     symbol: responseMessageContent.symbol,
     description: responseMessageContent.description,
     newsUrl: responseMessageContent.newsUrl,
+    createdTime: new Date(),
   };
 }
 

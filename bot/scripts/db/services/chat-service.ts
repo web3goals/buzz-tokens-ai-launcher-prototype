@@ -1,10 +1,24 @@
+import { Collection } from "mongodb";
+import { mongoDBConfig } from "../../config/mongodb";
+import clientPromise from "../client";
 import { Chat } from "../models/chat";
 
-// TODO: Implement
 export async function findChats(): Promise<Chat[]> {
-  return [{ id: 5000261155 }];
+  const collection = await getCollectionTokenIdeas();
+  return await collection.find({}).toArray();
 }
 
-// TODO: Implement
-// TODO: Insert if chat with specified id doesn't exist
-export async function insertChat(chat: Chat): Promise<void> {}
+export async function insertChat(chat: Chat): Promise<void> {
+  const collection = await getCollectionTokenIdeas();
+  await collection.updateOne(
+    { id: chat.id },
+    { $setOnInsert: chat },
+    { upsert: true }
+  );
+}
+
+async function getCollectionTokenIdeas(): Promise<Collection<Chat>> {
+  const client = await clientPromise;
+  const db = client.db(mongoDBConfig.database);
+  return db.collection<Chat>(mongoDBConfig.collectionChats);
+}

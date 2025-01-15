@@ -1,5 +1,9 @@
 import { ObjectId } from "mongodb";
 
 export class Chat {
-  constructor(public id: number, public _id?: ObjectId) {}
+  constructor(
+    public id: string,
+    public createdTime: Date,
+    public _id?: ObjectId
+  ) {}
 }
