@@ -1,45 +1,60 @@
-import TelegramBot from "node-telegram-bot-api";
-import { TokenIdea } from "../types/token-idea";
+import { TokenIdea } from "../db/models/token-idea";
+import { insertTokenIdea } from "../db/services/token-idea-service";
+import { News } from "../types/news";
+import { generateTokenIdea } from "./ai";
+import Bot from "./bot";
+import { fetchNews } from "./news";
 
 export default class Agent {
-  private bot: any;
+  private bot: Bot;
 
-  constructor(bot: TelegramBot) {
+  constructor(bot: Bot) {
     this.bot = bot;
   }
 
-  public start() {
-    setInterval(async () => {
-      const tokenIdea = await this.generateTokenIdea();
-      if (tokenIdea) {
-        this.broadcastTokenIdea(tokenIdea);
-      }
-    }, 10_000);
-  }
+  // TODO: Enable interval for production
+  public async start() {
+    try {
+      console.log("Starting the agent...");
 
-  private async generateTokenIdea(): Promise<TokenIdea | undefined> {
-    // TODO: Fetch tops news from newsapi.org
-    // TODO: Ask ChatGPT to form a token idea
-    // TODO: Save token idea in database
-    return { id: "42", name: "Bitcoin", symbol: "BTC", description: "Bitcoin" };
-  }
-
-  private async broadcastTokenIdea(tokenIdea: TokenIdea) {
-    // TODO: Load chat IDs from database
-    const chatIds = ["5000261155"];
-    for (let i = 0; i < chatIds.length; i++) {
-      try {
-        this.bot.sendMessage(
-          chatIds[i],
-          "News:\n...\n\n" +
-            "Token:\n" +
-            JSON.stringify(tokenIdea) +
-            "\n\nLink:\n" +
-            `https://t.me/buzz_tokens_ai_launcher_bot/app?startapp=${tokenIdea.id}`
-        );
-      } catch (error) {
-        console.error(error);
-      }
+      // const agentInterval = 10_000;
+      // setInterval(async () => {
+      //   this.startIteration();
+      // }, agentInterval);
+      this.startIteration();
+    } catch (error) {
+      console.error(error);
     }
+  }
+
+  private async startIteration() {
+    console.log("Starting an iteration...");
+    // Get news
+    const news = await fetchNews();
+    if (!news) {
+      throw new Error("No news fetched");
+    }
+    // Get token idea
+    const tokenIdea = await generateTokenIdea(news);
+    if (!tokenIdea) {
+      throw new Error("No token idea generated");
+    }
+    // Save token idea
+    await insertTokenIdea(tokenIdea);
+    // Broadcast token idea
+    const broadcastMessage = this.generateBroadcastMessage(news, tokenIdea);
+    await this.bot.broadcastMessage(broadcastMessage);
+    console.log("Iteration completed");
+  }
+
+  private generateBroadcastMessage(news: News, tokenIdea: TokenIdea): string {
+    return (
+      "News:\n" +
+      JSON.stringify(news) +
+      "\n\nToken idea:\n" +
+      JSON.stringify(tokenIdea) +
+      "\n\nLink for launching:\n" +
+      `https://t.me/buzz_tokens_ai_launcher_bot/app?startapp=i_${tokenIdea._id?.toString()}`
+    );
   }
 }

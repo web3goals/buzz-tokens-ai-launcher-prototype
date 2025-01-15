@@ -1,26 +1,17 @@
 import dotenv from "dotenv";
-import TelegramBot from "node-telegram-bot-api";
 import Agent from "./lib/agent";
+import Bot from "./lib/bot";
 
 dotenv.config();
 
 async function main() {
-  console.log("Starting the bot...");
+  console.log("Starting...");
 
-  // Create a new bot
-  const bot = new TelegramBot(process.env.TOKEN as string, {
-    polling: true,
-    testEnvironment: true,
-  });
+  // Create and start the bot
+  const bot = new Bot();
+  bot.start();
 
-  // Handle events
-  bot.on("message", (msg) => {
-    const chatId = msg.chat.id;
-    // TODO: Save chat ID in database
-    bot.sendMessage(chatId, `Hello, you will receive token ideas soon!`);
-  });
-
-  // Create a new agent
+  // Create and start the agent
   const agent = new Agent(bot);
   agent.start();
 }
