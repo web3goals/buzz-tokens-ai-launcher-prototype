@@ -3,7 +3,13 @@
 import { siteConfig } from "@/config/site";
 import useArgentTMA from "@/hooks/use-argent-tma";
 import { addressToShortAddress } from "@/lib/converters";
-import { GithubIcon, LogOutIcon, MenuIcon, RabbitIcon } from "lucide-react";
+import {
+  BotIcon,
+  GithubIcon,
+  LogOutIcon,
+  MenuIcon,
+  RabbitIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import {
@@ -47,6 +53,12 @@ export function SiteHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <Link href={siteConfig.links.telegramBot} target="_blank">
+                <DropdownMenuItem>
+                  <BotIcon className="size-4 mr-2" />
+                  <span>Telegram Bot</span>
+                </DropdownMenuItem>
+              </Link>
               <Link href={siteConfig.links.github} target="_blank">
                 <DropdownMenuItem>
                   <GithubIcon className="size-4 mr-2" />

@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { HomeConnectedAccountSection } from "@/components/home/home-connected-account-section";
+import { HomeLoadingSection } from "@/components/home/home-loading-section";
+import { HomeNotConnectedAccountSection } from "@/components/home/home-not-connected-account-section";
 import useArgentTMA from "@/hooks/use-argent-tma";
-import useError from "@/hooks/use-error";
-import { Loader2Icon, WalletIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -11,6 +11,7 @@ export default function HomePage() {
   const { argentTMA } = useArgentTMA();
   const router = useRouter();
 
+  // Define Telegram start params for following redirecting
   const searchParams = new URLSearchParams(location.search);
   const tgStartParam = searchParams.get("tgWebAppStartParam");
   const tgStartParamToken = tgStartParam?.startsWith("t_")
@@ -96,7 +97,7 @@ export default function HomePage() {
     argentTMA &&
     argentTMA.isConnected()
   ) {
-    return <HomeConnectedAccount />;
+    return <HomeConnectedAccountSection />;
   }
 
   if (
@@ -105,54 +106,8 @@ export default function HomePage() {
     argentTMA &&
     !argentTMA.isConnected()
   ) {
-    return <HomeNotConnectedAccount />;
+    return <HomeNotConnectedAccountSection />;
   }
 
-  return <HomeLoading />;
-}
-
-function HomeLoading() {
-  return (
-    <main className="container py-10 md:px-32 lg:px-56 xl:px-80">
-      <div className="flex flex-col items-center">
-        <Loader2Icon className="animate-spin text-primary" />
-      </div>
-    </main>
-  );
-}
-
-function HomeConnectedAccount() {
-  return (
-    <main className="container py-10 lg:px-80">
-      <p>Home page...</p>
-    </main>
-  );
-}
-
-function HomeNotConnectedAccount() {
-  const { argentTMA } = useArgentTMA();
-  const { handleError } = useError();
-
-  async function handleConnect() {
-    try {
-      console.log("Connecting the user...");
-      if (!argentTMA) {
-        throw new Error("ArgentTMA is undefined");
-      }
-      await argentTMA?.requestConnection({
-        callbackData: "custom_callback",
-        approvalRequests: [],
-      });
-    } catch (error) {
-      handleError(error);
-    }
-  }
-
-  return (
-    <main className="container py-10 lg:px-80">
-      <Button onClick={() => handleConnect()}>
-        <WalletIcon className="size-4 mr-2" /> Connect Argent Wallet
-      </Button>
-    </main>
-  );
+  return <HomeLoadingSection />;
 }
