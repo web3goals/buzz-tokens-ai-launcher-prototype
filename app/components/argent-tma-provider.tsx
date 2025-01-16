@@ -36,6 +36,10 @@ export function ArgentTMAProvider({ children }: { children: React.ReactNode }) {
             contract: chainConfig.contracts.helloStarknet,
             selector: "increase_balance",
           },
+          {
+            contract: chainConfig.contracts.erc20Factory,
+            selector: "create_erc20",
+          },
         ],
         validityDays: 90,
       },
