@@ -1,14 +1,15 @@
 "use client";
 
+import { LoadingSection } from "@/components/loading-section";
+import { TokenSection } from "@/components/token/token-section";
 import { useParams } from "next/navigation";
 
 export default function TokenPage() {
   const { address } = useParams();
-  console.log({ address });
 
-  return (
-    <main className="container py-10 lg:px-80">
-      <p>Token Page...</p>
-    </main>
-  );
+  if (!address) {
+    return <LoadingSection />;
+  }
+
+  return <TokenSection tokenAddress={address as string} />;
 }

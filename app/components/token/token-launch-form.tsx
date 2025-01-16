@@ -95,12 +95,14 @@ export function TokenLaunchForm(props: { tokenIdea: TokenIdea }) {
         throw new Error("Created ERC20 address in undefined");
       }
       console.log("ERC20 address:", erc20Address);
+      const erc20AddressHex = "0x0" + erc20Address.toString(16);
+      console.log("ERC20 address hex:", erc20AddressHex);
       // Save address in database
       const token: Token = {
         name: values.name,
         symbol: values.symbol,
         description: values.description,
-        address: erc20Address.toString(),
+        address: erc20AddressHex,
         creator: account.address,
       };
       const createTokenResponse = await createToken(token);
@@ -108,12 +110,9 @@ export function TokenLaunchForm(props: { tokenIdea: TokenIdea }) {
         throw new Error(createTokenResponse?.error);
       }
       // Show toast
-      toast({
-        title: "Awesome 🤘",
-        description: "Token launched",
-      });
+      toast({ title: "Token launched 🚀" });
       // Redirect to token page
-      router.push(`/token/${erc20Address.toString()}`);
+      router.push(`/token/${erc20AddressHex}`);
     } catch (error) {
       handleError(error, "Failed to submit the form, try again later");
       setIsProsessing(false);
