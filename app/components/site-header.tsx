@@ -9,9 +9,9 @@ import {
   HouseIcon,
   LogOutIcon,
   MenuIcon,
-  RabbitIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { BeeIcon } from "./icons/bee";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -37,7 +37,7 @@ export function SiteHeader() {
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
             <div className="flex items-center justify-center size-8 bg-primary rounded-full">
-              <RabbitIcon className="text-primary-foreground size-4" />
+              <BeeIcon className="text-primary-foreground size-4" />
             </div>
             <span className="text-primary font-bold">{siteConfig.name}</span>
           </Link>

@@ -51,7 +51,7 @@ export default class Agent {
 
   private generateBroadcastMessage(tokenIdea: TokenIdea): string {
     return (
-      "*💡 TOKEN IDEA 🐰*" +
+      "*🐝 BUZZ TOKEN IDEA 🐝*" +
       `\n\n*Name*: ${tokenIdea.name}` +
       `\n\n*Symbol*: $${tokenIdea.symbol}` +
       `\n\n*Description*: ${tokenIdea.description}` +
