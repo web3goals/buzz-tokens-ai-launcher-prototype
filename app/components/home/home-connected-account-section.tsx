@@ -50,7 +50,7 @@ export function HomeConnectedAccountSection() {
         As soon as the AI agent finds a cool idea to launch a token, you&apos;ll
         get a notification in the Telegram bot 🔔
       </p>
-      <Link href={siteConfig.links.telegramBot}>
+      <Link href={siteConfig.links.bot}>
         <Button variant="outline" className="mt-4">
           <BotIcon />
           Open Telegram Bot

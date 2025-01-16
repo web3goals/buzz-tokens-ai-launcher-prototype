@@ -60,7 +60,7 @@ export function SiteHeader() {
                   <span>Home Page</span>
                 </DropdownMenuItem>
               </Link>
-              <Link href={siteConfig.links.telegramBot} target="_blank">
+              <Link href={siteConfig.links.bot} target="_blank">
                 <DropdownMenuItem>
                   <BotIcon />
                   <span>Telegram Bot</span>
