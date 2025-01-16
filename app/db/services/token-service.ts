@@ -3,6 +3,12 @@ import { Collection, ObjectId } from "mongodb";
 import clientPromise from "../client";
 import { Token } from "../models/token";
 
+export async function findTokens(creator: string): Promise<Token[] | null> {
+  const collection = await getCollectionTokens();
+  const tokenIdea = await collection.find({ creator: creator }).toArray();
+  return tokenIdea;
+}
+
 export async function findToken(address: string): Promise<Token | null> {
   const collection = await getCollectionTokens();
   const tokenIdea = await collection.findOne({ address: address });
