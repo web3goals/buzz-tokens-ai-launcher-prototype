@@ -46,7 +46,7 @@ export function HomeNotConnectedAccountSection() {
         tokens based on them in a few clicks
       </p>
       <Button onClick={() => handleConnect()} className="mt-4">
-        <WalletIcon className="size-4 mr-2" /> Connect Argent Wallet
+        <WalletIcon /> Connect Argent Wallet
       </Button>
     </main>
   );

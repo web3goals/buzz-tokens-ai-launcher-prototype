@@ -173,16 +173,16 @@ export function TokenLaunchForm(props: { tokenIdea: TokenIdea }) {
         />
         <Button type="submit" variant="default" disabled={isProsessing}>
           {isProsessing ? (
-            <Loader2Icon className="size-4 mr-2 animate-spin" />
+            <Loader2Icon className="animate-spin" />
           ) : (
-            <RocketIcon className="size-4 mr-2" />
+            <RocketIcon />
           )}
           Launch token
         </Button>
       </form>
       <Link href={props.tokenIdea.newsUrl} target="_blank">
         <Button variant="outline" disabled={isProsessing} className="mt-2">
-          <ExternalLinkIcon className="size-4 mr-2" /> Open News Page
+          <ExternalLinkIcon /> Open News Page
         </Button>
       </Link>
     </Form>

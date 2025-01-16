@@ -56,19 +56,19 @@ export function SiteHeader() {
             <DropdownMenuContent>
               <Link href="/">
                 <DropdownMenuItem>
-                  <HouseIcon className="size-4 mr-2" />
+                  <HouseIcon />
                   <span>Home Page</span>
                 </DropdownMenuItem>
               </Link>
               <Link href={siteConfig.links.telegramBot} target="_blank">
                 <DropdownMenuItem>
-                  <BotIcon className="size-4 mr-2" />
+                  <BotIcon />
                   <span>Telegram Bot</span>
                 </DropdownMenuItem>
               </Link>
               <Link href={siteConfig.links.github} target="_blank">
                 <DropdownMenuItem>
-                  <GithubIcon className="size-4 mr-2" />
+                  <GithubIcon />
                   <span>GitHub</span>
                 </DropdownMenuItem>
               </Link>
@@ -76,7 +76,7 @@ export function SiteHeader() {
                 <div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => handleDisconnect()}>
-                    <LogOutIcon className="size-4 mr-2" />
+                    <LogOutIcon />
                     <span>
                       Disconnect ({addressToShortAddress(account?.address)})
                     </span>

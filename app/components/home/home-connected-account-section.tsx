@@ -23,7 +23,7 @@ export function HomeConnectedAccountSection() {
       </p>
       <Link href={siteConfig.links.telegramBot}>
         <Button variant="outline" className="mt-4">
-          <BotIcon className="size-4 mr-2" />
+          <BotIcon />
           Open Telegram Bot
         </Button>
       </Link>
