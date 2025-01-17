@@ -44,8 +44,8 @@ export function HomeNotConnectedAccountSection() {
         Launch buzz tokens faster than anybody else in the universe
       </h1>
       <p className="font-medium tracking-tight text-muted-foreground max-w-[680px] mt-2">
-        AI agent that analyzesz the hottest news and helps launch meme or AI
-        tokens based on them in a few clicks
+        AI agent that finds ideas for meme or AI tokens based on the hottest
+        news and helps you launch those tokens in a few clicks
       </p>
       {argentTMA ? (
         <Button onClick={() => handleConnect()} className="mt-4">

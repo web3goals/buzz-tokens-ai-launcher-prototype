@@ -3,7 +3,7 @@ export type SiteConfig = typeof siteConfig;
 export const siteConfig = {
   name: "Buzz Tokens AI Launcher",
   description:
-    "AI agent that analyzes the hottest news and helps launch meme or AI tokens based on them in a few clicks",
+    "AI agent that finds ideas for meme or AI tokens based on the hottest news and helps you launch those tokens in a few clicks",
   links: {
     bot: "https://t.me/buzz_tokens_ai_launcher_bot",
     app: "https://t.me/buzz_tokens_ai_launcher_bot/app",
