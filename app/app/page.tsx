@@ -1,50 +1,39 @@
 "use client";
 
-import { HomeConnectedAccountSection } from "@/components/home/home-connected-account-section";
-import { HomeNotConnectedAccountSection } from "@/components/home/home-not-connected-account-section";
 import { LoadingSection } from "@/components/loading-section";
-import useArgentTMA from "@/hooks/use-argent-tma";
-import { getTgWebAppData } from "@/lib/tg";
+import { getTgWebAppStartParam } from "@/lib/tg";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function HomePage() {
-  const { argentTMA } = useArgentTMA();
+export default function IndexPage() {
   const router = useRouter();
 
-  // Define Telegram start params for following redirecting
-  const { tgWebAppStartParam } = getTgWebAppData();
-  const tgStartParamToken = tgWebAppStartParam?.startsWith("t_")
-    ? tgWebAppStartParam.slice(2)
-    : null;
-  const tgStartParamIdea = tgWebAppStartParam?.startsWith("i_")
-    ? tgWebAppStartParam.slice(2)
-    : null;
-
   useEffect(() => {
-    if (tgStartParamToken) {
-      router.push(`/token/${tgStartParamToken}`);
+    // Define Telegram start params
+    const tgWebAppStartParam = getTgWebAppStartParam(window.location.hash);
+    const tgWebAppStartParamToken = tgWebAppStartParam?.startsWith("t_")
+      ? tgWebAppStartParam.slice(2)
+      : null;
+    const tgWebAppStartParamIdea = tgWebAppStartParam?.startsWith("i_")
+      ? tgWebAppStartParam.slice(2)
+      : null;
+
+    // Redirect to token page
+    if (tgWebAppStartParamToken) {
+      router.push(`/token/${tgWebAppStartParamToken}`);
     }
-  }, [tgStartParamToken, router]);
 
-  useEffect(() => {
-    if (tgStartParamIdea) {
-      router.push(`/token/launch/idea/${tgStartParamIdea}`);
+    // Redirect to token launch page
+    else if (tgWebAppStartParamIdea) {
+      router.push(`/token/launch/idea/${tgWebAppStartParamIdea}`);
     }
-  }, [tgStartParamIdea, router]);
 
-  if (
-    !tgStartParamToken &&
-    !tgStartParamIdea &&
-    argentTMA &&
-    argentTMA.isConnected()
-  ) {
-    return <HomeConnectedAccountSection />;
-  }
-
-  if (!tgStartParamToken && !tgStartParamIdea) {
-    return <HomeNotConnectedAccountSection />;
-  }
+    // Redirect to home page
+    else {
+      router.push(`/home`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <LoadingSection />;
 }

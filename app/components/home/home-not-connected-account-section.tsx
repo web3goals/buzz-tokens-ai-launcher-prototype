@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export function HomeNotConnectedAccountSection() {
-  const { isTgWebAppPlatform, argentTMA } = useArgentTMA();
+  const { argentTMA } = useArgentTMA();
   const { handleError } = useError();
 
   async function handleConnect() {
@@ -47,7 +47,7 @@ export function HomeNotConnectedAccountSection() {
         AI agent that analyzesz the hottest news and helps launch meme or AI
         tokens based on them in a few clicks
       </p>
-      {isTgWebAppPlatform ? (
+      {argentTMA ? (
         <Button onClick={() => handleConnect()} className="mt-4">
           <WalletIcon /> Connect Argent Wallet
         </Button>
