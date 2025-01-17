@@ -2,12 +2,14 @@
 
 import { chainConfig } from "@/config/chain";
 import { telegramConfig } from "@/config/telegram";
+import { getTgWebAppData } from "@/lib/tg";
 import { ArgentTMA, SessionAccountInterface } from "@argent/tma-wallet";
 import { createContext, useEffect, useState } from "react";
 import { RpcProvider } from "starknet";
 
 // Define the type of context value
 interface ArgentTMAContextValue {
+  isTgWebAppPlatform: boolean | undefined;
   argentTMA: ArgentTMA | undefined;
   account: SessionAccountInterface | undefined;
   setAccount: (account: SessionAccountInterface | undefined) => void;
@@ -21,11 +23,23 @@ export const ArgentTMAContext = createContext<
 
 // Create a provider component
 export function ArgentTMAProvider({ children }: { children: React.ReactNode }) {
+  const [isTgWebAppPlatform, setIsTgWebAppPlatform] = useState<
+    boolean | undefined
+  >();
   const [argentTMA, setArgentTMA] = useState<ArgentTMA | undefined>();
   const [account, setAccount] = useState<SessionAccountInterface | undefined>();
   // const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
+    // Define Telegram web data
+    const { isTgWebAppPlatform } = getTgWebAppData();
+    setIsTgWebAppPlatform(isTgWebAppPlatform);
+
+    // Definte Argent TMA
+    if (!isTgWebAppPlatform) {
+      return;
+    }
+
     const argentTMA = ArgentTMA.init({
       environment: "sepolia",
       appName: telegramConfig.app.name,
@@ -89,7 +103,14 @@ export function ArgentTMAProvider({ children }: { children: React.ReactNode }) {
   }, [argentTMA]);
 
   return (
-    <ArgentTMAContext.Provider value={{ argentTMA, account, setAccount }}>
+    <ArgentTMAContext.Provider
+      value={{
+        isTgWebAppPlatform,
+        argentTMA,
+        account,
+        setAccount,
+      }}
+    >
       {children}
     </ArgentTMAContext.Provider>
   );

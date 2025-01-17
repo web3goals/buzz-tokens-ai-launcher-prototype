@@ -56,7 +56,12 @@ export function TokenLaunchForm(props: { tokenIdea: TokenIdea }) {
         throw new Error("ArgentTMA is undefined");
       }
       if (!argentTMA.isConnected() || !account) {
-        throw new Error("Account is not connected");
+        toast({
+          variant: "destructive",
+          title: "You need to connect your account on the home page",
+        });
+        setIsProsessing(false);
+        return;
       }
       // Define contract
       const { abi: contractAbi } = await argentTMA.provider.getClassAt(

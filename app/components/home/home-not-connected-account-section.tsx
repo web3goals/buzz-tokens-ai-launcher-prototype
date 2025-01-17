@@ -1,13 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
 import useArgentTMA from "@/hooks/use-argent-tma";
 import useError from "@/hooks/use-error";
-import { WalletIcon } from "lucide-react";
+import { BotIcon, WalletIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export function HomeNotConnectedAccountSection() {
-  const { argentTMA } = useArgentTMA();
+  const { isTgWebAppPlatform, argentTMA } = useArgentTMA();
   const { handleError } = useError();
 
   async function handleConnect() {
@@ -45,9 +47,17 @@ export function HomeNotConnectedAccountSection() {
         AI agent that analyzesz the hottest news and helps launch meme or AI
         tokens based on them in a few clicks
       </p>
-      <Button onClick={() => handleConnect()} className="mt-4">
-        <WalletIcon /> Connect Argent Wallet
-      </Button>
+      {isTgWebAppPlatform ? (
+        <Button onClick={() => handleConnect()} className="mt-4">
+          <WalletIcon /> Connect Argent Wallet
+        </Button>
+      ) : (
+        <Link href={siteConfig.links.bot} target="_blank">
+          <Button className="mt-4">
+            <BotIcon /> Open Telegram Bot
+          </Button>
+        </Link>
+      )}
     </main>
   );
 }
