@@ -1,4 +1,4 @@
-![Cover](/cover.png)
+![Cover](/Cover.png)
 
 # 🐝 Buzz Tokens AI Launcher
 
