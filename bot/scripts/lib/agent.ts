@@ -11,15 +11,16 @@ export default class Agent {
     this.bot = bot;
   }
 
-  // TODO: Enable interval for production
   public async start() {
     console.log("Starting the agent...");
 
-    // const agentInterval = 10_000;
-    // setInterval(async () => {
-    //   this.startIteration();
-    // }, agentInterval);
-    this.startIteration();
+    const agentInterval = 60 * 60 * 1000;
+    setInterval(async () => {
+      this.startIteration();
+    }, agentInterval);
+
+    // const agentDelay = 120 * 1000;
+    // setTimeout(() => this.startIteration(), agentDelay);
   }
 
   private async startIteration() {
